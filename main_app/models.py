@@ -1,5 +1,6 @@
 # Create your models here.
 from django.db import models
+from datetime import date
 
 # A tuple of 2-tuples
 Results = (
@@ -7,11 +8,6 @@ Results = (
     ('L', 'Loss'),
     ('N', 'Not played')
 )
-# new code above
-
-class Basseball(models.Model):
-    pass
-
 
 # Create your models here.
 class Baseball(models.Model):
@@ -22,10 +18,13 @@ class Baseball(models.Model):
 
     def __str__(self):
         return self.team_name
+    
+    def game_of_the_day(self):
+        return self.games_set.filter(date=date.today()).count() >= len(Results)
 
 # Add new Feeding model below Cat model
 class Games(models.Model):
-    date = models.DateField()
+    date = models.DateField("game date")
     result = models.CharField(
         max_length=1,
         choices=Results,
@@ -39,3 +38,6 @@ class Games(models.Model):
     def __str__(self):
     # Nice method for obtaining the friendly value of a Field.choice
         return f"{self.get_game_display()} on {self.date}"
+
+class Meta:
+    ordering = ['-date']
