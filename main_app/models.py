@@ -42,6 +42,12 @@ class Games(models.Model):
 class Meta:
     ordering = ['-date']
 
+class Player(models.Model):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    jersey_number = models.IntegerField()
 
+    def __str__(self):
+        return self.name
 
 

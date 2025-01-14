@@ -4,8 +4,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
-from .models import Baseball, Games
-from .serializers import BaseballSerializer, GamesSerializer
+from .models import Baseball, Games, Player
+from .serializers import BaseballSerializer, GamesSerializer, PlayerSerializer
 
 # Define the home view
 class Home(APIView):
@@ -42,4 +42,13 @@ class GameDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         baseball_id = self.kwargs['basebal_id']
         return Games.objects.filter(baseball_id=baseball_id)
+    
+class PlayerList(generics.ListCreateAPIView):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
+
+class PlayerDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
+    lookup_field = 'id'
     
