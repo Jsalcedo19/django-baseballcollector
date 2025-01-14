@@ -22,7 +22,7 @@ class Baseball(models.Model):
     def game_of_the_day(self):
         return self.games_set.filter(date=date.today()).count() >= len(Results)
 
-# Add new Feeding model below Cat model
+# Add new Feeding model below Games model
 class Games(models.Model):
     date = models.DateField("game date")
     result = models.CharField(
@@ -37,7 +37,11 @@ class Games(models.Model):
 
     def __str__(self):
     # Nice method for obtaining the friendly value of a Field.choice
-        return f"{self.get_game_display()} on {self.date}"
+        return f"{self.Baseball} on {self.date}"
 
 class Meta:
     ordering = ['-date']
+
+
+
+
