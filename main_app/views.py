@@ -33,7 +33,7 @@ def perform_create(self, serializer):
 class BaseballDetail(generics.RetrieveUpdateDestroyAPIView):
   queryset = Baseball.objects.all()
   serializer_class = BaseballSerializer
-  lookup_field = 'id'
+  lookup_field = '_id'
 
   def get_queryset(self):
     user = self.request.user
