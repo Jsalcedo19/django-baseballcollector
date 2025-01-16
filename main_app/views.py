@@ -22,12 +22,12 @@ class BaseballList(generics.ListCreateAPIView):
   serializer_class = BaseballSerializer
   permission_classes = [permissions.IsAuthenticated]
 
-def get_queryset(self):
+  def get_queryset(self):
     user = self.request.user
     return Baseball.objects.filter(user=user)
 
-def perform_create(self, serializer):
-    serializer.save(user=self.request.user)
+  def perform_create(self, serializer):
+      serializer.save(user=self.request.user)
 
 
 class BaseballDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -80,7 +80,7 @@ class GameDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
     def get_queryset(self):
-        baseball_id = self.kwargs['basebal_id']
+        baseball_id = self.kwargs['baseball_id']
         return Games.objects.filter(baseball_id=baseball_id)
     
 class PlayerList(generics.ListCreateAPIView):
