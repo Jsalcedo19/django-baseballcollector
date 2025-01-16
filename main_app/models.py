@@ -1,6 +1,7 @@
 # Create your models here.
 from django.db import models
 from datetime import date
+from django.contrib.auth.models import User
 
 # A tuple of 2-tuples
 Results = (
@@ -24,7 +25,8 @@ class Baseball(models.Model):
     city = models.CharField(max_length=100)
     stadium = models.CharField(max_length=100)
     start_date = models.IntegerField()
-    Player = models.ManyToManyField('Player', related_name='baseball')
+    player = models.ManyToManyField('Player', related_name='baseball')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.team_name
