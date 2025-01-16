@@ -22,6 +22,20 @@ class BaseballDetail(generics.RetrieveUpdateDestroyAPIView):
   serializer_class = BaseballSerializer
   lookup_field = 'id'
 
+   # add (override) the retrieve method below
+  def retrieve(self, request, *args, **kwargs):
+    instance = self.get_object()
+    serializer = self.get_serializer(instance)
+
+    # Get the list of toys not associated with this cat
+    players_not_associated = Player.objects.exclude(id__in=instance.players.all())
+    players_serializer = PlayerSerializer(players_not_associated, many=True)
+
+    return Response({
+        'cat': serializer.data,
+        'toys_not_associated': players_serializer.data
+    })
+  
 class GameListCreate(generics.ListCreateAPIView):
   serializer_class = GamesSerializer
 
@@ -51,4 +65,19 @@ class PlayerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
     lookup_field = 'id'
+
+class AddPlayerToBaseball(APIView):
+  def post(self, request, baseball_id, player_id):
+    baseball = Baseball.objects.get(id=baseball_id)
+    player = Player.objects.get(id=player_id)
+    baseball.players.add(player)
+    return Response({'message': f'Player {player.name} added to Baseball Team {baseball.team_name}'})
+
+class RemovePlayerFromBaseball(APIView):
+    def post(self, request, baseball_id, player_id):
+        baseball = Baseball.objects.get(id=baseball_id)
+        player = Player.objects.get(id=player_id)
+        baseball.players.remove(player)
+        return Response({'message': f'Player {player.name} removed from Baseball Team {baseball.team_name}'})
     
+
