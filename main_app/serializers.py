@@ -3,8 +3,15 @@ from .models import Baseball
 from .models import Games
 from .models import Player
 
+class PlayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Player
+        fields = '__all__'
+        read_only_fields = ('name',)
+
 class BaseballSerializer(serializers.ModelSerializer):
     game_of_the_day = serializers.SerializerMethodField() # add this line
+    players = PlayerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Baseball
@@ -20,11 +27,7 @@ class GamesSerializer(serializers.ModelSerializer):
     fields = '__all__'
     read_only_fields = ('baseball',)
 
-class PlayerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Player
-        fields = '__all__'
-        read_only_fields = ('name',)
+
 
     
 

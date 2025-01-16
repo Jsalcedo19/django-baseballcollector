@@ -9,12 +9,22 @@ Results = (
     ('N', 'Not played')
 )
 
+class Player(models.Model):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    jersey_number = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+
 # Create your models here.
 class Baseball(models.Model):
     team_name = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     stadium = models.CharField(max_length=100)
     start_date = models.IntegerField()
+    Player = models.ManyToManyField('Player', related_name='baseball')
 
     def __str__(self):
         return self.team_name
@@ -42,12 +52,5 @@ class Games(models.Model):
 class Meta:
     ordering = ['-date']
 
-class Player(models.Model):
-    name = models.CharField(max_length=100)
-    position = models.CharField(max_length=100)
-    jersey_number = models.IntegerField()
-
-    def __str__(self):
-        return self.name
 
 
